@@ -4,11 +4,26 @@
     <head>
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="{% static "./css/app.css" %}" />
+        <link rel='stylesheet' href="{% static "/css/v-calendar.min.css" %}">
         <script src="{% static "./lib/vue-devel.js" %}"></script>
+        <script src="{% static "./lib/v-calendar.js" %}"></script>
     </head>
     <body class="body">
+        <div class="site-header">
+            <span class="container">
+                <span class="left">
+                    Header
+                </span>
+                <span class="right" id="login-info">
+                    Login Info
+                </span>
+            </span>
+        </div>
+        <div class="spacer"></div>
         <div id="app">
             <h1>${ title }</h1>
+            <v-calendar></v-calendar>
+            <v-date-picker :mode='mode' v-model='selectedDate'></v-date-picker>
         </div>
     </body>
     <script src="{% static "./app.js" %}"></script>
