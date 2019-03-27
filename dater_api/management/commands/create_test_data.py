@@ -42,17 +42,87 @@ class Command(BaseCommand):
     ]
 
     consumer_users = [
+        {
+            'username': 'u01',
+            'e_mail': 'u01@examle.com',
+            'phone_number': '+49-999-888-01'
+        },
+        {
+            'username': 'u02',
+            'e_mail': 'u02@examle.com',
+            'phone_number': '+49-999-888-02'
+        },
+        {
+            'username': 'u03',
+            'e_mail': 'u03@examle.com',
+            'phone_number': '+49-999-888-03'
+        },
+        {
+            'username': 'u04',
+            'e_mail': 'u04@examle.com',
+            'phone_number': '+49-999-888-04'
+        },
+        {
+            'username': 'u05',
+            'e_mail': 'u05@examle.com',
+            'phone_number': '+49-999-888-05'
+        },
+        {
+            'username': 'u06',
+            'e_mail': 'u06@examle.com',
+            'phone_number': '+49-999-888-06'
+        },
+        {
+            'username': 'u07',
+            'e_mail': 'u07@examle.com',
+            'phone_number': '+49-999-888-07'
+        },
+        {
+            'username': 'u08',
+            'e_mail': 'u08@examle.com',
+            'phone_number': '+49-999-888-08'
+        },
+
     ]
 
     def create_consumers(self):
-        pass
+        for user in Command.consumer_users:
+            exists = User.objects.filter(username=user['username'])
+            user_data = None
+            if len(exists) == 0:
+                user_data = User.objects.create_user(
+                    username=user['username'],
+                    password=user['username'],
+                    email=user['e_mail'],
+                    is_active=True
+                )
+            elif len(exists) == 1:
+                user_data = exists[0]
+            else:
+                raise Exception("the user " + user['username'] + "exists multiple times")
+
+            exists = ConsumerData.objects.filter(user_id=user_data.id)
+            if len(exists) == 0:
+                consumer_data = ConsumerData(user=user_data, phone_number=user['phone_number'])
+                consumer_data.save()
+            elif len(exists) == 1:
+                consumer_data = exists[0]
+                consumer_data.phone_number = user['phone_number']
+                #consumer_data.session_key = user['session_key']
+                consumer_data.save()
+            else:
+                raise Exception("the consumer data for " + user['username'] + "exists multiple times")
 
     def create_providers(self):
         for user in Command.provider_users:
             exists = User.objects.filter(username=user['username'])
             user_data = None
             if len(exists) == 0:
-                user_data = User.objects.create_user(user['username'], user['username'], is_active=True)
+                user_data = User.objects.create_user(
+                    username=user['username'],
+                    password=user['username'],
+                    is_active=True
+                )
             elif len(exists) == 1:
                 user_data = exists[0]
             else:
@@ -64,6 +134,8 @@ class Command(BaseCommand):
                 client.save()
             elif len(exists) != 1:
                 raise Exception("the client " + user['client'] + "exists multiple times")
+            else:
+               client = exists[0]
 
             exists = ProviderData.objects.filter(user_id=user_data.id)
             if len(exists) == 0:
@@ -75,7 +147,6 @@ class Command(BaseCommand):
                 provider_data.save()
             else:
                 raise Exception("the provider data for " + user['username'] + "exists multiple times")
-        pass
 
     def handle(self, *args, **kwargs):
         self.create_providers()
