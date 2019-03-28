@@ -139,11 +139,11 @@ class Command(BaseCommand):
 
             slot_types = SlotType.objects.filter(client=client)
             if len([slot_type for slot_type in slot_types if slot_type.name == '30 minutes']) == 0:
-                SlotType(client=client, name='30 minutes', length=1800).save
+                SlotType(client=client, name='30 minutes', length=1800).save()
             if len([slot_type for slot_type in slot_types if slot_type.name == '1 hour']) == 0:
-                SlotType(client=client, name='1 hour', length=3600).save
+                SlotType(client=client, name='1 hour', length=3600).save()
             if len([slot_type for slot_type in slot_types if slot_type.name == '90 minutes']) == 0:
-                SlotType(client=client, name='90 minutes', length=5400).save
+                SlotType(client=client, name='90 minutes', length=5400).save()
 
             exists = ProviderData.objects.filter(user_id=user_data.id)
             if len(exists) == 0:
