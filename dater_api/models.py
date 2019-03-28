@@ -11,14 +11,14 @@ class AvailableSlot(models.Model):
     from_time = models.TimeField()
     to_time = models.TimeField()
 
-class SlotTypes(models.Model):
+class SlotType(models.Model):
     client = models.ForeignKey(ProviderClient, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     length = models.IntegerField()
 
 class BookedSlot(models.Model):
     slot = models.ForeignKey(AvailableSlot, on_delete=models.CASCADE)
-    slot_type = models.ForeignKey(SlotTypes, on_delete=models.CASCADE)
+    slot_type = models.ForeignKey(SlotType, on_delete=models.CASCADE)
     from_time = models.TimeField()
     to_time = models.TimeField()
     bestaetigt = models.BooleanField(default=False)
